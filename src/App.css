@@ -1,32 +1,24 @@
-.app {
-  margin: 0 auto;
-  font-family: Arial, sans-serif;
-  color: var(--text-color);
-  max-width: 1400px;
-}
-
 header {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 12px;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
+  gap: 8px;
+  padding: 20px;
   background-color: var(--background-color);
   z-index: 10;
-  padding: 16px 0;
   box-shadow: 0 4px 12px var(--shadow-color);
   border-bottom: 1px solid var(--shadow-color);
 }
 
 .search-input {
-  padding: 10px;
-  font-size: 16px;
+  padding: 8px;
+  font-size: 14px;
   width: 100%;
-  max-width: 400px;
+  max-width: 500px;
   border: 1px solid var(--border-color);
   border-radius: 6px;
   transition: border-color 0.2s ease;
@@ -38,150 +30,94 @@ header {
   box-shadow: 0 0 4px var(--focus-shadow-color);
 }
 
-.filters {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.filters select {
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
-  background-color: #ffffff;
-  cursor: pointer;
-  transition: border-color 0.2s ease;
-}
-
-.filters select:hover {
-  border-color: var(--primary-color);
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 32px;
-  margin-top: 140px;
-  margin-inline: 20px;
-}
-
-.card {
-  border: 1px solid var(--border-color);
-  padding: 20px;
-  border-radius: 10px;
-  background-color: var(--light-background-color);
-  text-align: center;
-  box-shadow: 0 4px 6px var(--shadow-color);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 10px var(--hover-shadow-color);
-}
-
-.card h3 {
-  margin-bottom: 10px;
-  font-size: 18px;
-  color: var(--primary-color);
-  font-weight: bold;
-}
-
-.card p {
-  margin: 5px 0;
-  font-size: 14px;
-  color: var(--subtext-color);
-}
-
-.sort-controls {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 10px;
-}
-
-.sort-controls label {
-  font-size: 14px;
-  color: var(--text-color);
-}
-
-.sort-controls select {
-  padding: 8px;
-  font-size: 14px;
-  border: 1px solid var(--border-color);
-  border-radius: 4px;
-  background-color: #fff;
-  cursor: pointer;
-}
-
-@media (max-width: 768px) {
-  .filters {
-    justify-content: center;
-  }
-
-  .grid {
-    margin-top: 180px;
-  }
-}
-
-/* .app {
-  font-family: Arial, sans-serif;
-  color: #333;
-}
-
 .main-container {
   display: flex;
   flex-direction: row;
-  height: 100vh;
+  height: calc(100vh - 75px);
+  margin-top: 75px;
 }
 
 .sidebar {
   flex: 0 0 250px;
-  background-color: #f4f4f4;
+  background-color: var(--sidebar-backgound);
   padding: 20px;
-  border-right: 1px solid #ddd;
-  overflow-y: auto;
-}
-
-.content {
-  flex: 1;
-  padding: 20px;
+  border-right: 1px solid var(--shadow-color);
   overflow-y: auto;
 }
 
 .filters {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-}
-
-.filter-group {
-  display: flex;
-  flex-direction: column;
   gap: 10px;
 }
 
-.filter-item {
+.filters-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.reset-button {
+  border: 1px solid black;
+  border-radius: 12px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-right: 8px;
+}
+
+.filter-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px 12px;
+  margin-bottom: 12px;
+}
+
+.checkbox-radio-item {
   display: flex;
   align-items: center;
   gap: 8px;
+  margin-block: 5px;
   font-size: 14px;
 }
 
+.grid-container {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 32px 12px;
+  padding: 20px;
+  justify-content: start;
+}
+
+.grid-no-results {
+  text-align: center;
+  flex: 1;
+  overflow-y: auto;
+  margin: 20px 0;
+  font-size: 18px;
+  margin-top: 60px;
+  color: var(--primary-text-color);
+}
+
 @media (max-width: 768px) {
-  .main-container {
-    flex-direction: column;
-  }
-
   .sidebar {
-    flex: 0 0 auto;
-    width: 100%;
-    border-right: none;
-    border-bottom: 1px solid #ddd;
+    flex: 0 0 100px;
   }
 
-  .content {
-    padding: 15px;
+  .filter-columns {
+    grid-template-columns: 1fr;
   }
-} */
+
+  .search-input {
+    width: 300px;
+  }
+
+  .grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+}

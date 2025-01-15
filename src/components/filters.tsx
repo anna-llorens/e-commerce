@@ -1,5 +1,6 @@
-import React from "react";
 import { useProductsContext } from "../context/products-context";
+import { ProductFilters } from "../types";
+import { CheckboxGroup } from "./checkobox-group";
 
 const MATERIAL_OPTIONS: string[] = [
   "Cotton", "Polyester", "Linen", "Lycra", "Silk", "Denim", "Nylon", "Leather", "Wool", "Spandex", "Chiffon", "Lace", "Fleece",
@@ -15,53 +16,100 @@ const TYPE_OPTIONS: string[] = [
 ];
 
 export const Filters = () => {
-  const { filters, onFilterChange, sortOrder, onSortChange } = useProductsContext()
+  const { filters, onFilterChange, sortOrder, onSortChange } = useProductsContext();
 
-  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    onFilterChange(e.target.name, e.target.value);
+  const hasActiveFilters =
+    (filters.material && filters.material.length > 0) ||
+    (filters.category && filters.category.length > 0) ||
+    (filters.color && filters.color.length > 0) ||
+    (filters.type && filters.type.length > 0);
+
+  const handleCheckboxChange = (
+    name: keyof ProductFilters,
+    value: string,
+    checked: boolean
+  ) => {
+    const updatedFilters: ProductFilters = {
+      ...filters,
+      [name]: checked
+        ? [...(filters[name] || []), value] // Add value 
+        : (filters[name] || []).filter((item) => item !== value), // Remove value
+    };
+    onFilterChange(updatedFilters);
+  };
+
+  const handleClearAll = () => {
+    const clearedFilters: ProductFilters = {
+      material: [],
+      category: [],
+      color: [],
+      type: [],
+    };
+    onFilterChange(clearedFilters);
+    onSortChange("asc");
   };
 
   return (
-    <div className="filters">
-      <div style={{ display: "flex", alignItems: "center" }}>
-        <b>Filter Products:</b>
+    <aside className="sidebar">
+      <div className="filters">
+        <div className="filters-header">
+          <b>Product Filters</b>
+          <button className="reset-button"
+            onClick={handleClearAll}
+            style={{ visibility: hasActiveFilters ? "visible" : "hidden" }}>
+            Reset
+          </button>
+        </div>
+        <div className="filter-columns">
+          <CheckboxGroup
+            name="color"
+            options={COLOR_OPTIONS}
+            selectedValues={filters.color || []}
+            onChange={handleCheckboxChange}
+          />
+          <CheckboxGroup
+            name="material"
+            options={MATERIAL_OPTIONS}
+            selectedValues={filters.material || []}
+            onChange={handleCheckboxChange}
+          />
+          <CheckboxGroup
+            name="type"
+            options={TYPE_OPTIONS}
+            selectedValues={filters.type || []}
+            onChange={handleCheckboxChange}
+          />
+          <CheckboxGroup
+            name="category"
+            options={CATEGORY_OPTIONS}
+            selectedValues={filters.category || []}
+            onChange={handleCheckboxChange}
+          />
+        </div>
+        <div>
+          <b>Sort Order</b>
+          <label className="checkbox-radio-item">
+            <input
+              type="radio"
+              name="sortOrder"
+              value="asc"
+              checked={sortOrder === "asc"}
+              onChange={() => onSortChange("asc")}
+            />
+            Size: Ascending
+          </label>
+          <label className="checkbox-radio-item">
+            <input
+              type="radio"
+              name="sortOrder"
+              value="desc"
+              checked={sortOrder === "desc"}
+              onChange={() => onSortChange("desc")}
+            />
+            Size: Descending
+          </label>
+        </div>
       </div>
-      <select name="material" value={filters.material} onChange={handleChange}>
-        <option value="">All Materials</option>
-        {MATERIAL_OPTIONS.map((material) => (
-          <option key={material} value={material}>
-            {material}
-          </option>
-        ))}
-      </select>
-      <select name="category" value={filters.category} onChange={handleChange}>
-        <option value="">All Categories</option>
-        {CATEGORY_OPTIONS.map((category) => (
-          <option key={category} value={category}>
-            {category}
-          </option>
-        ))}
-      </select>
-      <select name="color" value={filters.color} onChange={handleChange}>
-        <option value="">All Colors</option>
-        {COLOR_OPTIONS.map((color) => (
-          <option key={color} value={color}>
-            {color}
-          </option>
-        ))}
-      </select>
-      <select name="type" value={filters.type} onChange={handleChange}>
-        <option value="">All Types</option>
-        {TYPE_OPTIONS.map((type) => (
-          <option key={type} value={type}>
-            {type}
-          </option>
-        ))}
-      </select>
-      <select value={sortOrder} onChange={(event) => onSortChange(event.target.value as "asc" | "desc")}>
-        <option value="asc">Size: Ascending</option>
-        <option value="desc">Size: Descending</option>
-      </select>
-    </div>
+    </aside>
   );
 };

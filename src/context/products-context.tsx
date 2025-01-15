@@ -1,40 +1,60 @@
-import React, { createContext, useContext, useState, useMemo } from "react";
-import { useProducts } from "../hooks/use-products";
+import React, { createContext, useContext, useState, useMemo, useEffect } from "react";
 import { Product, ProductFilters } from "../types";
 import { getFilteredProducts } from "../helpers";
+import { fetchProducts } from "../api";
+
 
 type ProductsContextType = {
   products: Product[];
   search: string;
   setSearch: (value: string) => void;
   filters: ProductFilters;
-  onFilterChange: (name: string, value: string) => void;
+  onFilterChange: (updatedFilters: ProductFilters) => void;
   sortOrder: "asc" | "desc";
   onSortChange: (order: "asc" | "desc") => void;
+  loading: boolean;
+  error: string | null;
 };
 
 const ProductsContext = createContext<ProductsContextType | undefined>(undefined);
 
 export const ProductsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { products } = useProducts();
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
   const [search, setSearch] = useState("");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [filters, setFilters] = useState<ProductFilters>({
-    material: "",
-    category: "",
-    color: "",
-    type: "",
+    material: [],
+    category: [],
+    color: [],
+    type: [],
   });
 
-  const filteredProducts = useMemo(() => {
-    return getFilteredProducts(products, search, filters, sortOrder);
-  }, [products, search, filters, sortOrder]);
+  useEffect(() => {
+    const loadProducts = async () => {
+      try {
+        const products = await fetchProducts();
+        setAllProducts(products);
+      } catch (err) {
+        setError((err as Error).message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadProducts();
+  }, []);
 
-  const handleFilterChange = (name: string, value: string) => {
-    setFilters({ ...filters, [name]: value });
+  const filteredProducts = useMemo(() => {
+    return getFilteredProducts(allProducts, search, filters, sortOrder);
+  }, [allProducts, search, filters, sortOrder]);
+
+  const onFilterChange = (updatedFilters: ProductFilters) => {
+    setFilters(updatedFilters);
   };
 
-  const handleSortChange = (order: "asc" | "desc") => {
+  const onSortChange = (order: "asc" | "desc") => {
     setSortOrder(order);
   };
 
@@ -45,9 +65,11 @@ export const ProductsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         search,
         setSearch,
         filters,
-        onFilterChange: handleFilterChange,
+        onFilterChange,
         sortOrder,
-        onSortChange: handleSortChange,
+        onSortChange,
+        loading,
+        error,
       }}
     >
       {children}

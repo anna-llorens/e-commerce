@@ -1,24 +1,22 @@
-import React from "react";
 
-import { Filters } from "./filters";
 import { useProductsContext } from "../context/products-context";
 
-export const Header: React.FC = () => {
+export const Header = () => {
   const {
     search,
     setSearch,
+    products
   } = useProductsContext();
-
   return (
     <header>
       <input
         type="text"
-        placeholder="Search..."
+        placeholder="Search for a product..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         className="search-input"
       />
-      <Filters />
+      <span>Total: {products.length}</span>
     </header>
   );
 };

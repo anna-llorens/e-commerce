@@ -6,30 +6,16 @@ import { Header } from "./components/header";
 import "./App.css";
 import { Filters } from "./components/filters";
 
-const App = () => {
 
+const App = () => {
 
   return (
     <ProductsProvider>
-      <div className="app">
-        <Header />
-        <aside className="sidebar">
-          <Filters />
-        </aside>
+      <Header />
+      <div className="main-container">
+        <Filters />
         <ProductGrid />
       </div>
-
-      {/* <div className="app">
-        <div className="main-container">
-          <Header />
-          <aside className="sidebar">
-            <Filters />
-          </aside>
-          <main className="content">
-            <ProductGrid />
-          </main>
-        </div>
-      </div> */}
     </ProductsProvider>
   );
 };

@@ -13,7 +13,9 @@ export const getFilteredProducts = (
       const matchesSearch = product.name.toLowerCase().includes(search.toLowerCase());
 
       const matchesFilters = (Object.keys(filters) as (keyof ProductFilters)[]).every((key) =>
-        filters[key] ? product[key] === filters[key] : true
+        filters[key]?.length > 0
+          ? filters[key].includes(product[key])
+          : true // Match all (empty array)
       );
       return matchesSearch && matchesFilters;
     })
@@ -25,7 +27,3 @@ export const getFilteredProducts = (
     });
 };
 
-export const getUniqueValuesByKey = (products: Product[], key: keyof Product): any[] => {
-  const uniqueValues = new Set(products.map((product) => product[key]));
-  return Array.from(uniqueValues);
-};

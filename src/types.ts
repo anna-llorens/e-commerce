@@ -1,8 +1,8 @@
 export type ProductFilters = {
-  material: string;
-  category: string;
-  color: string;
-  type: string;
+  material: string[];
+  category: string[];
+  color: string[];
+  type: string[];
 };
 
 export type Product = {
