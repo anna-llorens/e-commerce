@@ -54,7 +54,7 @@ export const Filters = () => {
       <div className="filters">
         <div className="filters-header">
           <b>Product Filters</b>
-          <button className="reset-button"
+          <button data-testid="reset-button" className="reset-button"
             onClick={handleClearAll}
             style={{ visibility: hasActiveFilters ? "visible" : "hidden" }}>
             Reset

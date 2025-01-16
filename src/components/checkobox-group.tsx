@@ -21,6 +21,7 @@ export const CheckboxGroup: React.FC<Props> = ({
           <input
             type="checkbox"
             name={name}
+            data-testid={`checkbox-${name}-${option}`}
             value={option}
             checked={selectedValues.includes(option)}
             onChange={(e) => onChange(name, option, e.target.checked)}

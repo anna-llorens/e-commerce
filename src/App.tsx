@@ -12,7 +12,7 @@ const App = () => {
   return (
     <ProductsProvider>
       <Header />
-      <div className="main-container">
+      <div className="main-container" data-testId="main-container">
         <Filters />
         <ProductGrid />
       </div>
